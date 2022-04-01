@@ -1,0 +1,17 @@
+---
+BasedOnStyle: LLVM
+AlignAfterOpenBracket: Align
+AlignConsecutiveDeclarations: 'false'
+AlignEscapedNewlines: Left
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+ColumnLimit: '140'
+CompactNamespaces: 'false'
+Cpp11BracedListStyle: 'true'
+MaxEmptyLinesToKeep: '2'
+NamespaceIndentation: None
+SortIncludes: 'true'
+Standard: Cpp11
+IndentWidth: '4'
+UseTab: Never
