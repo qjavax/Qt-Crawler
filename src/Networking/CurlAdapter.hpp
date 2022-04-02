@@ -4,17 +4,17 @@
 //
 #pragma once
 #include "Common/Namespace.h"
-#include "Networking/NetworkingProvider.hpp"
+#include "Networking/HtmlProvider.hpp"
 
 #include <string>
 BEGIN_QTC_NAMESPACE
 
 /**
  * @brief RAII Curl wrapper which allows to get contents of web page
- * @see NetworkingProvider
+ * @see HtmlProvider
  * @warning To escure thread safety init global curl
  */
-class CurlAdapter : public NetworkingProvider {
+class CurlAdapter : public HtmlProvider {
 
 public:
     explicit CurlAdapter();
@@ -26,7 +26,7 @@ private:
     std::unique_ptr<Impl> _impl;
 };
 
-class CurlAdapterFactory : public NetworkingProviderFactory {
+class CurlAdapterFactory : public HtmlProviderFactory {
 public:
     using concrete_created_type = CurlAdapter;
 

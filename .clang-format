@@ -1,11 +1,14 @@
 ---
 BasedOnStyle: LLVM
+BreakConstructorInitializers: BeforeComma
+AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveDeclarations: 'false'
 AlignEscapedNewlines: Left
 AllowShortBlocksOnASingleLine: 'false'
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
+AlwaysBreakTemplateDeclarations: 'Yes'
 ColumnLimit: '120'
 CompactNamespaces: 'false'
 Cpp11BracedListStyle: 'true'
@@ -15,5 +18,4 @@ SortIncludes: 'true'
 Standard: Cpp11
 IndentWidth: '4'
 UseTab: Never
-BreakConstructorInitializers: BeforeComma
-AccessModifierOffset: -4
+

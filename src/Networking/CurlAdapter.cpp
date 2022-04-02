@@ -60,7 +60,7 @@ struct CurlAdapter::Impl {
         curl_easy_setopt(handle, CURLOPT_EXPECT_100_TIMEOUT_MS, 0L);
     }
     ~Impl() {
-        curl_easy_cleanup(handle);
+     //   curl_easy_cleanup(handle);
     }
     CurlAdapter::Response Get(std::string const &url) {
         curl_easy_setopt(handle, CURLOPT_URL, url.c_str());

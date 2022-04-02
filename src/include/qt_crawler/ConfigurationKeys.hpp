@@ -17,6 +17,7 @@ struct ConfigurationKeys {
     struct Key {
         constexpr static std::string_view help{"help"};
         constexpr static std::string_view url{"url"};
+        constexpr static std::string_view outDir{"out"};
     };
 
     // For const values

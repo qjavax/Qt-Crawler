@@ -3,7 +3,7 @@
 // Copyright (c) 2022 All rights reserved.
 //
 #include "Mocks/HtmlParserMock.hpp"
-#include "Mocks/NetworkingProviderMock.hpp"
+#include "Mocks/HtmlProviderMock.hpp"
 #include "Networking/HttpClient.hpp"
 #include "gtest/gtest.h"
 
@@ -16,9 +16,9 @@ class HttpClientFixture : public Test {
 public:
     const std::string fakeUrl = "https://sometestandnonexistingdomainname.com/";
     void SetUp() override {
-        _networkingProviderFactory = std::make_shared<NiceMock<NetworkingProviderFactoryMock>>();
+        _htmlProviderFactory = std::make_shared<NiceMock<HtmlProviderFactoryMock>>();
         _htmlParser = std::make_shared<NiceMock<HtmlParserMock>>();
-        _httpClientFactory = std::make_unique<HttpClientFactory>(_networkingProviderFactory, _htmlParser);
+        _httpClientFactory = std::make_unique<HttpClientFactory>(_htmlProviderFactory, _htmlParser);
     }
     std::shared_ptr<Client> CreateHttpClient() {
         return _httpClientFactory->Create(fakeUrl);
@@ -27,7 +27,7 @@ public:
 protected:
     std::unique_ptr<HttpClientFactory> _httpClientFactory;
     std::shared_ptr<NiceMock<HtmlParserMock>> _htmlParser;
-    std::shared_ptr<NiceMock<NetworkingProviderFactoryMock>> _networkingProviderFactory;
+    std::shared_ptr<NiceMock<HtmlProviderFactoryMock>> _htmlProviderFactory;
 };
 
 TEST_F(HttpClientFixture, HelloWorld) {

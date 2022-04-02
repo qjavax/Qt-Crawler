@@ -9,7 +9,7 @@
 #include <string>
 BEGIN_QTC_NAMESPACE
 
-class NetworkingProvider {
+class HtmlProvider {
 public:
     struct Response {
         Result result;
@@ -19,16 +19,16 @@ public:
             : result(std::move(_result))
             , data(std::move(_data)) {}
     };
-    virtual ~NetworkingProvider() = default;
+    virtual ~HtmlProvider() = default;
     virtual Response Get(std::string const &url) = 0;
 };
 
-class NetworkingProviderFactory {
+class HtmlProviderFactory {
 public:
-    using created_type = NetworkingProvider;
+    using created_type = HtmlProvider;
     using created_type_p = std::unique_ptr<created_type>;
 
-    virtual ~NetworkingProviderFactory() = default;
+    virtual ~HtmlProviderFactory() = default;
     virtual created_type_p Create() const = 0;
 };
 

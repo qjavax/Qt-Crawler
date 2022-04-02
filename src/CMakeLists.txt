@@ -12,6 +12,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_D
 add_library(${PROJECT_NAME}
             version.h
             # List sources here
+            ${CMAKE_CURRENT_SOURCE_DIR}/IO/FileSystemWriter.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/HttpClient.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/CurlAdapter.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Parser/GumboParserAdapter.cpp

@@ -12,6 +12,10 @@
 
 BEGIN_QTC_NAMESPACE
 
-class ClientMock : public Client {};
+class ClientMock : public Client {
+public:
+    ~ClientMock() override = default;
+    MOCK_METHOND(Result, VisitAndSaveAllSubpagesm(std::string const &), (override));
+};
 
 END_QTC_NAMESPACE

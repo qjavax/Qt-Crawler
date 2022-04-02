@@ -5,6 +5,8 @@
 #include "Common/Namespace.h"
 #include "Common/Types.h"
 
+#include "IO/FileSystemWriter.hpp"
+
 #include "Networking/CurlAdapter.hpp"
 #include "Networking/HttpClient.hpp"
 
@@ -22,10 +24,18 @@ struct QtCrawlerApp::Impl {
             return Result(Result::Success::No,
                           std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::url.data());
         }
-        auto networkingProviderFactory = std::make_shared<CurlAdapterFactory>();
+        auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
+        if (!outDir) {
+            return Result(Result::Success::No,
+                          std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data());
+        }
+
+        auto htmlProviderFactory = std::make_shared<CurlAdapterFactory>();
         std::shared_ptr<HtmlParser> gumboHtmlParser = GumboParserAdapterFactory().Create();
-        auto httpClientFactory = std::make_unique<HttpClientFactory>(networkingProviderFactory, gumboHtmlParser);
+        std::shared_ptr<Writer<std::string>> writer = FileSystemWriterFactory().Create(*outDir);
+        auto httpClientFactory = std::make_unique<HttpClientFactory>(htmlProviderFactory, gumboHtmlParser);
         _httpClient = httpClientFactory->Create(*url);
+        _httpClient->VisitAndSaveAllSubpages(std::move(writer));
 
         return Result(Result::Success::Yes);
     }
