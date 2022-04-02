@@ -7,8 +7,10 @@ endif ()
 add_executable(qt_crawler_tests
                # List sources here
                UT_Networking_HttpClient.cpp
-               UT_Networking_HttpClient.cpp
+               UT_QtCrawlerApp.cpp
                )
+
+target_compile_features(qt_crawler_tests PUBLIC cxx_std_17)
 
 target_link_libraries(qt_crawler_tests
                       PRIVATE

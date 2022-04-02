@@ -7,15 +7,18 @@
 
 struct ConfigurationKeys {
 
+    // For short keys
     struct ShortKey {
         constexpr static std::string_view help{"h"};
         constexpr static std::string_view url{"u"};
     };
 
+    // For long keys
     struct Key {
         constexpr static std::string_view help{"help"};
         constexpr static std::string_view url{"url"};
     };
 
+    // For const values
     struct Value {};
 };

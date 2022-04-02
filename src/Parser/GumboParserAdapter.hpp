@@ -21,5 +21,15 @@ private:
     std::unique_ptr<Impl> _impl;
 };
 
+class GumboParserAdapterFactory {
+public:
+    using created_type = HtmlParser;
+    using created_type_p = std::unique_ptr<created_type>;
+    using concrete_created_type = GumboParserAdapter;
+
+    created_type_p Create() const {
+        return std::make_unique<concrete_created_type>();
+    }
+};
 
 END_QTC_NAMESPACE

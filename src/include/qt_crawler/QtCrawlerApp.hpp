@@ -4,14 +4,14 @@
 //
 #pragma once
 #include "qt_crawler/Configuration.hpp"
-
+#include "Common/Types.h"
 #include <memory>
 
 class QtCrawlerApp {
 public:
-    explicit QtCrawlerApp(Configuration &&config) noexcept;
+    explicit QtCrawlerApp(std::unique_ptr<Configuration> config) noexcept;
     ~QtCrawlerApp() noexcept;
-    int Run() noexcept;
+    Result Run() noexcept;
 
 private:
     struct Impl;

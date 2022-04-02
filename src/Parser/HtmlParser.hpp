@@ -12,9 +12,9 @@
 BEGIN_QTC_NAMESPACE
 
 class HtmlParser {
-  public:
+public:
     virtual ~HtmlParser() = default;
-    virtual Result Parse(std::string const& data) = 0;
+    virtual Result Parse(std::string const &data) = 0;
     virtual std::vector<std::string> GetAllLinks() = 0;
 };
 

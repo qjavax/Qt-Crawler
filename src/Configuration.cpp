@@ -6,7 +6,7 @@
 #include "Common/Types.h"
 #include <cxxopts.hpp>
 
-struct Configuration::Impl {
+struct ConfigurationImpl::Impl {
     explicit Impl(int argc, char *argv[]) noexcept {
         TRY using ShortKey = ConfigurationKeys::ShortKey;
         using Key = ConfigurationKeys::Key;
@@ -42,26 +42,26 @@ private:
 };
 
 
-Configuration::Configuration(int argc, char *argv[]) noexcept
+ConfigurationImpl::ConfigurationImpl(int argc, char *argv[]) noexcept
     : _impl(std::make_unique<Impl>(argc, argv)) {}
 
-Configuration::~Configuration() noexcept = default;
+ConfigurationImpl::~ConfigurationImpl() noexcept = default;
 
-bool Configuration::HasKey(std::string_view const key) const noexcept {
+bool ConfigurationImpl::HasKey(std::string_view const key) const noexcept {
     TRY return _impl->HasKey(key);
     CATCH_STD
     CATCH_ALL
     return false;
 }
 
-std::optional<std::string> Configuration::GetValue(std::string_view const key) const noexcept {
+std::optional<std::string> ConfigurationImpl::GetValue(std::string_view const key) const noexcept {
     TRY return _impl->GetValue(key);
     CATCH_STD
     CATCH_ALL
     return std::nullopt;
 }
 
-std::string Configuration::Help() const noexcept {
+std::string ConfigurationImpl::Help() const noexcept {
     TRY return _impl->Help();
     CATCH_STD
     CATCH_ALL

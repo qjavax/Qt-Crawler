@@ -3,7 +3,6 @@
 // Copyright (c) 2022 All rights reserved.
 //
 #include <iostream>
-#include <string>
 
 #include "qt_crawler/Configuration.hpp"
 #include "qt_crawler/ConfigurationKeys.hpp"
@@ -11,13 +10,16 @@
 
 int main(int argc, char *argv[]) {
 
-    Configuration config(argc, argv);
+    auto config = ConfigurationFactory().Create(argc, argv);
 
-    if (config.HasKey(ConfigurationKeys::Key::help)) {
-        std::cout << config.Help() << '\n';
+    if (config->HasKey(ConfigurationKeys::Key::help)) {
+        std::cout << config->Help() << '\n';
         return 0;
     }
     QtCrawlerApp app(std::move(config));
-    int res = app.Run();
-    return res;
+    auto res = app.Run();
+    if(!res) {
+        std::cout << res.what() << '\n';
+    }
+    return res ? 0 : -1;
 }
