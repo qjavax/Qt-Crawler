@@ -15,6 +15,8 @@ add_library(${PROJECT_NAME}
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/HttpClient.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/CurlAdapter.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Parser/GumboParserAdapter.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/QtCrawlerApp.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Configuration.cpp
             )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -32,6 +34,7 @@ target_link_libraries(${PROJECT_NAME}
                       CONAN_PKG::gumbo-parser
                       CONAN_PKG::libcurl
                       CONAN_PKG::fmt
+                      CONAN_PKG::cxxopts
                       )
 
 add_library(qt_crawler::${PROJECT_NAME} ALIAS ${PROJECT_NAME})

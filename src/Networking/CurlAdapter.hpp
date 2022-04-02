@@ -31,7 +31,7 @@ public:
     using concrete_created_type = CurlAdapter;
 
     ~CurlAdapterFactory() override = default;
-    created_type_p Create() const {
+    created_type_p Create() const override {
         return std::make_unique<concrete_created_type>();
     }
 };

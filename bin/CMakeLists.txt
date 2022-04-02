@@ -8,6 +8,5 @@ target_link_libraries(qt_crawler_cli PRIVATE
                       qt_crawler::qt_crawler
                       project_options
                       project_warnings
-                      CONAN_PKG::cxxopts
                       CONAN_PKG::fmt
                       )

@@ -5,19 +5,19 @@
 #include <iostream>
 #include <string>
 
-#include <cxxopts.hpp>
+#include "qt_crawler/Configuration.hpp"
+#include "qt_crawler/ConfigurationKeys.hpp"
+#include "qt_crawler/QtCrawlerApp.hpp"
 
-#include "qt_crawler/QtCrawler.hpp"
+int main(int argc, char *argv[]) {
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
-    cxxopts::Options options("qt_crawler", "QT Documentation Crawler");
-    options.add_options()("h,help", "Show help.", cxxopts::value<bool>()->default_value("false"));
-    auto parsedOpts = options.parse(argc, argv);
+    Configuration config(argc, argv);
 
-    if (parsedOpts.count("help")) {
-        std::cout << options.help() << '\n';
+    if (config.HasKey(ConfigurationKeys::Key::help)) {
+        std::cout << config.Help() << '\n';
         return 0;
     }
-
-    return 0;
+    QtCrawlerApp app(std::move(config));
+    int res = app.Run();
+    return res;
 }
