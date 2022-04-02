@@ -2,8 +2,6 @@
 
 #include "gumbo.h"
 
-#include <fmt/core.h>
-
 namespace {
 USING_QTC_NAMESPACE
 
@@ -44,7 +42,6 @@ private:
         }
         GumboAttribute *href;
         if (node->v.element.tag == GUMBO_TAG_A && (href = gumbo_get_attribute(&node->v.element.attributes, "href"))) {
-            fmt::print("Found link {}\n", href->value);
             vec->push_back(href->value);
         }
 

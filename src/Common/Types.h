@@ -12,7 +12,9 @@ struct Result {
     Success success;
     std::optional<std::string> reason;
 
-    Result(Success const _success, std::optional<std::string> const &_reason = std::nullopt) : success(_success), reason(std::move(_reason)) {}
+    Result(Success const _success, std::optional<std::string> const &_reason = std::nullopt)
+        : success(_success)
+        , reason(std::move(_reason)) {}
     constexpr operator bool() const noexcept {
         return success == Success::Yes;
     }

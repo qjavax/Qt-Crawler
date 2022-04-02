@@ -56,7 +56,8 @@ private:
         auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
         if (!outDir) {
             success = Result::Success::No;
-            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data() + '\n');
+            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data() +
+                          '\n');
         }
         return Result{success, reason};
     }

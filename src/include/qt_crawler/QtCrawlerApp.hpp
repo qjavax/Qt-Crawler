@@ -3,8 +3,8 @@
 // Copyright (c) 2022 All rights reserved.
 //
 #pragma once
-#include "qt_crawler/Configuration.hpp"
 #include "Common/Types.h"
+#include "qt_crawler/Configuration.hpp"
 #include <memory>
 
 class QtCrawlerApp {
