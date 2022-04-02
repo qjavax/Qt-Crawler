@@ -5,17 +5,18 @@
 #pragma once
 #include "Common/Namespace.h"
 #include "Networking/Client.hpp"
+#include "Networking/NetworkingProvider.hpp"
 
 #include <memory>
 
 BEGIN_QTC_NAMESPACE
 
 class HttpClient : public Client {
-  public:
-    explicit HttpClient(std::string const &host);
+public:
+    explicit HttpClient(std::shared_ptr<NetworkingProviderFactory> networkingProviderFactory, std::string const &host);
     ~HttpClient() override;
 
-  private:
+private:
     struct Impl;
     std::unique_ptr<Impl> _impl;
 };

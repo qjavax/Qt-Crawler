@@ -14,6 +14,7 @@ add_library(${PROJECT_NAME}
             # List sources here
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/HttpClient.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Networking/CurlAdapter.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Parser/GumboParserAdapter.cpp
             )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

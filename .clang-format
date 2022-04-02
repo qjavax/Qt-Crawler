@@ -6,7 +6,7 @@ AlignEscapedNewlines: Left
 AllowShortBlocksOnASingleLine: 'false'
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
-ColumnLimit: '140'
+ColumnLimit: '120'
 CompactNamespaces: 'false'
 Cpp11BracedListStyle: 'true'
 MaxEmptyLinesToKeep: '2'
@@ -15,3 +15,5 @@ SortIncludes: 'true'
 Standard: Cpp11
 IndentWidth: '4'
 UseTab: Never
+BreakConstructorInitializers: BeforeComma
+AccessModifierOffset: -4

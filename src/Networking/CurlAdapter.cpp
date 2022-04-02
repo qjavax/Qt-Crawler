@@ -36,13 +36,10 @@ size_t write_data(void *contents, size_t sz, size_t nmemb, void *ctx) {
 } // namespace
 
 struct CurlAdapter::Impl {
-
-    explicit Impl(std::string const &url) : _url(std::move(url)) {
-        handle = curl_easy_init();
+    explicit Impl() {
+        handle = curl_multi_init();
         /* Important: use HTTP2 over HTTPS */
         curl_easy_setopt(handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2TLS);
-        curl_easy_setopt(handle, CURLOPT_URL, _url.c_str());
-
         /* buffer body */
         mem = std::make_unique<MemoryStruct>();
         curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
@@ -65,13 +62,26 @@ struct CurlAdapter::Impl {
     ~Impl() {
         curl_easy_cleanup(handle);
     }
+    CurlAdapter::Response Get(std::string const &url) {
+        curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
+
+        CURLcode res = curl_easy_perform(handle);
+
+        if (res != CURLE_OK) {
+            return Response(Result(Result::Success::No, curl_easy_strerror(res)));
+        }
+        return Response(Result(Result::Success::Yes), mem->buffer);
+    }
 
   private:
-    std::string _url;
     CURL *handle;
     std::unique_ptr<MemoryStruct> mem;
 };
 
-CurlAdapter::CurlAdapter(std::string const &url) : _impl(std::make_unique<Impl>(std::move(url))) {}
+CurlAdapter::CurlAdapter() : _impl(std::make_unique<Impl>()) {}
 
 CurlAdapter::~CurlAdapter() = default;
+
+CurlAdapter::Response CurlAdapter::Get(std::string const &url) {
+    return _impl->Get(url);
+}

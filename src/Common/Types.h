@@ -4,17 +4,19 @@
 //
 #pragma once
 
+#include <optional>
 #include <string>
 
 struct Result {
     enum class Success : bool { No = 0, Yes };
     Success success;
-    std::string reason;
+    std::optional<std::string> reason;
 
+    Result(Success const _success, std::optional<std::string> const &_reason = std::nullopt) : success(_success), reason(std::move(_reason)) {}
     constexpr operator bool() const noexcept {
         return success == Success::Yes;
     }
     const std::string what() const noexcept {
-        return reason;
+        return reason ? *reason : "";
     }
 };
