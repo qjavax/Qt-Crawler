@@ -20,6 +20,8 @@ public:
     explicit CurlAdapter();
     ~CurlAdapter() override;
     Response Get(std::string const &url) override;
+    Response ValidateUrl(std::string const &url) override;
+    std::optional<std::string> NormalizeUrl(std::string const &rootUrl, std::string const &maybeUrl) override;
 
 private:
     struct Impl;

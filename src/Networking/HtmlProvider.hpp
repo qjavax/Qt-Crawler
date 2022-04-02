@@ -21,6 +21,8 @@ public:
     };
     virtual ~HtmlProvider() = default;
     virtual Response Get(std::string const &url) = 0;
+    virtual Response ValidateUrl(std::string const &url) = 0;
+    virtual std::optional<std::string> NormalizeUrl(std::string const &rootUrl, std::string const &maybeUrl) = 0;
 };
 
 class HtmlProviderFactory {

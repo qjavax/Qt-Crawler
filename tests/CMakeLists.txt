@@ -7,6 +7,7 @@ endif ()
 add_executable(qt_crawler_tests
                # List sources here
                UT_Networking_HttpClient.cpp
+               UT_Networking_CurlAdapter.cpp
                UT_QtCrawlerApp.cpp
                )
 

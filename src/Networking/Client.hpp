@@ -11,7 +11,7 @@ BEGIN_QTC_NAMESPACE
 class Client {
 public:
     virtual ~Client() = default;
-    virtual Result VisitAndSaveAllSubpages(std::shared_ptr<Writer<std::string>>) = 0; 
+    virtual Result VisitAndSaveAllSubpages(std::shared_ptr<Writer<std::string>>) = 0;
 };
 
 

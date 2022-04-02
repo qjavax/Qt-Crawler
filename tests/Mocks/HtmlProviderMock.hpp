@@ -15,15 +15,15 @@ class HtmlProviderMock : public HtmlProvider {
 public:
     virtual ~HtmlProviderMock() = default;
     MOCK_METHOD(Response, Get, (std::string const &), (override));
+    MOCK_METHOD(Response, ValidateUrl, (std::string const &), (override));
+    MOCK_METHOD(std::optional<std::string>, NormalizeUrl, (std::string const &, std::string const &), (override));
 };
-
 
 class HtmlProviderFactoryMock : public HtmlProviderFactory {
 public:
     ~HtmlProviderFactoryMock() override = default;
     HtmlProviderFactoryMock() {
-        ON_CALL(*this, Create())
-            .WillByDefault(Return(ByMove(std::make_unique<testing::NiceMock<HtmlProviderMock>>())));
+        ON_CALL(*this, Create()).WillByDefault(Return(ByMove(std::make_unique<testing::NiceMock<HtmlProviderMock>>())));
     }
     MOCK_METHOD(created_type_p, Create, (), (const, override));
 };

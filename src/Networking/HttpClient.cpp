@@ -1,11 +1,21 @@
 #include "HttpClient.hpp"
 
+#include <algorithm>
 #include <curl/curl.h>
-
+#include <fmt/color.h>
+#include <fmt/core.h>
 
 namespace {
 USING_QTC_NAMESPACE
 
+std::string getUIDFromUrl(std::string const &url) {
+    auto res = url.substr(url.find("://") + 3);
+    std::replace(res.begin(), res.end(), '/', '_');
+    if (res.back() == '_') {
+        res.pop_back();
+    }
+    return res;
+}
 } // namespace
 
 struct HttpClient::Impl {
@@ -19,17 +29,17 @@ struct HttpClient::Impl {
         }
     }
     ~Impl() {
-        // Experimental disable
-        // curl_global_cleanup();
+        curl_global_cleanup();
     }
     Result VisitAndSaveAllSubpages(std::shared_ptr<Writer<std::string>> writer) {
         if (auto result = this->VisitRootPage(writer); !result) {
-            return Result(Result::Success::No, "Parsing root url failed");
+            return result;
         }
         auto subPages = _htmlParser->GetAllLinks();
         for (const auto &page : subPages) {
             if (auto response = this->VisitPage(page, writer); !response.result) {
-                return Result(Result::Success::No, "Parsing subpage url failed: " + page);
+                fmt::print(stderr, fg(fmt::color::red), "Parsing subpage url {} failed: {} \n", page,
+                           response.result.what());
             }
         }
         return Result(Result::Success::Yes);
@@ -39,17 +49,26 @@ private:
     Result VisitRootPage(std::shared_ptr<Writer<std::string>> writer) {
         auto response = this->VisitPage(_rootUrl, writer);
         if (response.result && response.data) {
-            auto parsingResult = _htmlParser->Parse(*response.data);
+            if (auto parsingResult = _htmlParser->Parse(*response.data); !parsingResult) {
+                return parsingResult;
+            }
             return Result(Result::Success::Yes);
         }
-        return Result(Result::Success::No);
+        return Result(Result::Success::No, response.result.what());
     }
 
     HtmlProvider::Response VisitPage(std::string const &url, std::shared_ptr<Writer<std::string>> &writer) {
         auto htmlProvider = _htmlProviderFactory->Create();
-        auto response = htmlProvider->Get(url);
+        auto maybeUrl = htmlProvider->NormalizeUrl(_rootUrl, url);
+        if (!maybeUrl) {
+            return HtmlProvider::Response(Result(Result::Success::No, *maybeUrl + " is not valid url"));
+        }
+        if (auto response = htmlProvider->ValidateUrl(*maybeUrl); !response.result) {
+            return response;
+        }
+        auto response = htmlProvider->Get(*maybeUrl);
         if (response.result && response.data) {
-            _writer->Write(*response.data, "definetly_not_here");
+            writer->Write(*response.data, getUIDFromUrl(*maybeUrl));
         }
         return response;
     }
@@ -57,7 +76,6 @@ private:
 private:
     std::shared_ptr<HtmlProviderFactory> _htmlProviderFactory;
     std::shared_ptr<HtmlParser> _htmlParser;
-    std::shared_ptr<Writer<std::string>> _writer;
     std::string const _rootUrl;
 };
 

@@ -16,6 +16,8 @@ struct ConfigurationImpl::Impl {
         _options = std::make_unique<cxxopts::Options>("qt_crawler", "QT Documentation Crawler");
         _options->add_options()(help, "Show help.", cxxopts::value<bool>()->default_value("false"));
         _options->add_options()(url, "Url to start crawler from", cxxopts::value<std::string>());
+        _options->add_options()(std::string(Key::outDir), "Path to directory to safe crawled webpages",
+                                cxxopts::value<std::string>());
         parsedOpts = std::make_unique<cxxopts::ParseResult>(_options->parse(argc, argv));
         CATCH_STD
         CATCH_ALL

@@ -33,8 +33,7 @@ protected:
 TEST_F(QtCrawlerAppFixture, GIVEN_no_args_provided_WHEN_App_is_started_THEN_it_returns_error) {
     auto config = CreateConfiguration();
     EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::url))).Times(1);
-    // TODO: All required argument should be checked at once
-    // EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::outDir))).Times(1);
+    EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::outDir))).Times(1);
 
     auto app = this->CreateApp(std::move(config));
     auto result = app->Run();
@@ -45,9 +44,11 @@ TEST_F(QtCrawlerAppFixture, GIVEN_no_args_provided_WHEN_App_is_started_THEN_it_r
 TEST_F(QtCrawlerAppFixture, GIVEN_required_args_provided_WHEN_App_is_started_THEN_it_should_not_fail) {
     auto config = CreateConfiguration();
     EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::url)))
-        .WillOnce(Return(std::optional<std::string>("https://test.io/")));
+        .Times(2)
+        .WillRepeatedly(Return(std::optional<std::string>("https://test.io/")));
     EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::outDir)))
-        .WillOnce(Return(std::optional<std::string>("./testsTmpDir/")));
+        .Times(2)
+        .WillRepeatedly(Return(std::optional<std::string>("./testsTmpDir/")));
 
     auto app = this->CreateApp(std::move(config));
     auto result = app->Run();

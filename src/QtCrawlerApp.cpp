@@ -19,33 +19,48 @@ struct QtCrawlerApp::Impl {
     explicit Impl(std::unique_ptr<Configuration> config) noexcept
         : _config(std::move(config)) {}
     Result Init() {
+        if (auto result = this->CheckAllRequiredArgs(); !result) {
+            return result;
+        }
         auto url = _config->GetValue(ConfigurationKeys::Key::url);
-        if (!url) {
-            return Result(Result::Success::No,
-                          std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::url.data());
-        }
-        auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
-        if (!outDir) {
-            return Result(Result::Success::No,
-                          std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data());
-        }
 
         auto htmlProviderFactory = std::make_shared<CurlAdapterFactory>();
         std::shared_ptr<HtmlParser> gumboHtmlParser = GumboParserAdapterFactory().Create();
-        std::shared_ptr<Writer<std::string>> writer = FileSystemWriterFactory().Create(*outDir);
         auto httpClientFactory = std::make_unique<HttpClientFactory>(htmlProviderFactory, gumboHtmlParser);
         _httpClient = httpClientFactory->Create(*url);
-        _httpClient->VisitAndSaveAllSubpages(std::move(writer));
 
         return Result(Result::Success::Yes);
     }
     Result Run() {
+        auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
+
+        std::shared_ptr<Writer<std::string>> writer = FileSystemWriterFactory().Create(*outDir);
+        if (auto result = _httpClient->VisitAndSaveAllSubpages(std::move(writer)); !result) {
+            return result;
+        }
         return Result(Result::Success::Yes);
     }
 
     ~Impl() noexcept = default;
 
 private:
+    Result CheckAllRequiredArgs() {
+        Result::Success success{Result::Success::Yes};
+        std::string reason;
+
+        auto url = _config->GetValue(ConfigurationKeys::Key::url);
+        if (!url) {
+            success = Result::Success::No;
+            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::url.data() + '\n');
+        }
+        auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
+        if (!outDir) {
+            success = Result::Success::No;
+            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data() + '\n');
+        }
+        return Result{success, reason};
+    }
+
     std::unique_ptr<Configuration> _config;
     std::unique_ptr<Client> _httpClient;
 };
