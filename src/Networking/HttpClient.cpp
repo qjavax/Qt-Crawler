@@ -38,7 +38,7 @@ struct HttpClient::Impl {
         auto subPages = _htmlParser->GetAllLinks();
         for (const auto &page : subPages) {
             if (auto response = this->VisitPage(page, writer); !response.result) {
-                fmt::print(stderr, fg(fmt::color::red), "Parsing subpage url {} failed: {} \n", page,
+                fmt::print(stderr, fg(fmt::color::red), "Visiting subpage url {} failed: {} \n", page,
                            response.result.what());
             }
         }
@@ -67,8 +67,8 @@ private:
             return response;
         }
         auto response = htmlProvider->Get(*maybeUrl);
-        if (response.result && response.data) {
-            writer->Write(*response.data, getUIDFromUrl(*maybeUrl));
+        if (response.result && response.data && !response.data->empty()) {
+            response.result = writer->Write(*response.data, getUIDFromUrl(*maybeUrl));
         }
         return response;
     }

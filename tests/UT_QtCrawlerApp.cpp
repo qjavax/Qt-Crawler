@@ -35,10 +35,12 @@ TEST_F(QtCrawlerAppFixture, GIVEN_no_args_provided_WHEN_App_is_started_THEN_it_r
     EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::url))).Times(1);
     EXPECT_CALL(*config, GetValue(StrEq(ConfigurationKeys::Key::outDir))).Times(1);
 
-    auto app = this->CreateApp(std::move(config));
-    auto result = app->Run();
-    EXPECT_FALSE(result);
-    EXPECT_THAT(result.what(), StartsWith("Missing required cmd argument"));
+    EXPECT_NO_THROW({
+        auto app = this->CreateApp(std::move(config));
+        auto result = app->Run();
+        EXPECT_FALSE(result);
+        EXPECT_THAT(result.what(), StartsWith("Missing required cmd argument"));
+    });
 }
 
 TEST_F(QtCrawlerAppFixture, GIVEN_required_args_provided_WHEN_App_is_started_THEN_it_should_not_fail) {
@@ -50,7 +52,9 @@ TEST_F(QtCrawlerAppFixture, GIVEN_required_args_provided_WHEN_App_is_started_THE
         .Times(2)
         .WillRepeatedly(Return(std::optional<std::string>("./testsTmpDir/")));
 
-    auto app = this->CreateApp(std::move(config));
-    auto result = app->Run();
-    EXPECT_TRUE(result);
+    EXPECT_NO_THROW({
+        auto app = this->CreateApp(std::move(config));
+        auto result = app->Run();
+        EXPECT_TRUE(result);
+    });
 }
