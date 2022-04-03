@@ -15,7 +15,7 @@ public:
         Result result;
         std::optional<std::string> data;
 
-        Response(Result const &_result, std::string const &_data = "")
+        explicit Response(Result const &_result, std::string const &_data = "")
             : result(std::move(_result))
             , data(std::move(_data)) {}
     };

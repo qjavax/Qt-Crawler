@@ -15,7 +15,7 @@ BEGIN_QTC_NAMESPACE
 class ConfigurationMock : public Configuration {
 public:
     ~ConfigurationMock() noexcept override = default;
-    ConfigurationMock() {
+    explicit ConfigurationMock() {
         ON_CALL(*this, GetValue(testing::_)).WillByDefault(testing::Return(std::nullopt));
     }
     MOCK_METHOD(bool, HasKey, (std::string_view const), (const, noexcept, override));

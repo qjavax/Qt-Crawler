@@ -8,8 +8,8 @@
 #include <string_view>
 
 /**
- * @brief Exposed for unit tests
- *
+ * @brief Configuration interface 
+ * Exposed for unit tests
  */
 class Configuration {
 public:

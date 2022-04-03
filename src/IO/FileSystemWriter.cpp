@@ -3,6 +3,8 @@
 #include "Common/ExceptionHandler.h"
 #include <filesystem>
 #include <fstream>
+#include <fmt/core.h>
+
 namespace {
 USING_QTC_NAMESPACE
 
@@ -26,7 +28,7 @@ Result FileSystemWriter::Write(std::string const &data, std::string const &filen
     outStream.open(fullPath, std::ofstream::out | std::ofstream::trunc);
 
     if (!outStream.is_open()) {
-        return Result(Result::Success::No, "Cannot open file for writing: " + fullPath);
+        return Result(Result::Success::No, fmt::format("Cannot open file for writing: {}", fullPath));
     }
     outStream << data;
     outStream.close();

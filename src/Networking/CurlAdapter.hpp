@@ -12,7 +12,7 @@ BEGIN_QTC_NAMESPACE
 /**
  * @brief RAII Curl wrapper which allows to get contents of web page
  * @see HtmlProvider
- * @warning To escure thread safety init global curl
+ * @warning Get is not thread safe method
  */
 class CurlAdapter : public HtmlProvider {
 

@@ -8,7 +8,10 @@
 #include "Parser/HtmlParser.hpp"
 
 BEGIN_QTC_NAMESPACE
-
+/**
+ * @brief HtmlParser implemented with gumbo-parser behaviour
+ * @see HtmlParser
+ */
 class GumboParserAdapter : public HtmlParser {
 public:
     explicit GumboParserAdapter();

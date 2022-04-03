@@ -12,6 +12,10 @@
 
 BEGIN_QTC_NAMESPACE
 
+/**
+ * @brief High-level implementation of the Client that allows you to search url subpages and perform Write on them
+ * @see Client
+ */
 class HttpClient : public Client {
 public:
     explicit HttpClient(std::shared_ptr<HtmlProviderFactory> htmlProviderFactory,

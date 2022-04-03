@@ -14,6 +14,9 @@ std::string getUIDFromUrl(std::string const &url) {
     if (res.back() == '_') {
         res.pop_back();
     }
+    if (res.rfind(".html") != res.length() - 5) {
+        res.append(".html");
+    }
     return res;
 }
 } // namespace
@@ -61,7 +64,7 @@ private:
         auto htmlProvider = _htmlProviderFactory->Create();
         auto maybeUrl = htmlProvider->NormalizeUrl(_rootUrl, url);
         if (!maybeUrl) {
-            return HtmlProvider::Response(Result(Result::Success::No, *maybeUrl + " is not valid url"));
+            return HtmlProvider::Response(Result(Result::Success::No, fmt::format("{} is not valid url", url)));
         }
         if (auto response = htmlProvider->ValidateUrl(*maybeUrl); !response.result) {
             return response;

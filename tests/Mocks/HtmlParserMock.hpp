@@ -14,7 +14,7 @@ BEGIN_QTC_NAMESPACE
 class HtmlParserMock : public HtmlParser {
 public:
     virtual ~HtmlParserMock() = default;
-    HtmlParserMock() {
+    explicit HtmlParserMock() {
         ON_CALL(*this, Parse(testing::_)).WillByDefault(testing::Return(Result(Result::Success::Yes)));
     }
     MOCK_METHOD(Result, Parse, (std::string const &), (override));

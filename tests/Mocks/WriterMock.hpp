@@ -14,7 +14,7 @@ template <typename Data>
 class WriterMock : public Writer<Data> {
 public:
     virtual ~WriterMock() = default;
-    WriterMock() {
+    explicit WriterMock() {
         ON_CALL(*this, Write(testing::_, testing::_)).WillByDefault(testing::Return(Result(Result::Success::Yes)));
     }
     MOCK_METHOD(Result, Write, (Data const &, std::string const &), (override));

@@ -11,6 +11,7 @@
 #include "Networking/HttpClient.hpp"
 
 #include "Parser/GumboParserAdapter.hpp"
+#include <fmt/core.h>
 
 namespace {
 USING_QTC_NAMESPACE
@@ -51,13 +52,12 @@ private:
         auto url = _config->GetValue(ConfigurationKeys::Key::url);
         if (!url) {
             success = Result::Success::No;
-            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::url.data() + '\n');
+            reason.append(fmt::format("Missing required cmd argument: {}\n", ConfigurationKeys::Key::url));
         }
         auto outDir = _config->GetValue(ConfigurationKeys::Key::outDir);
         if (!outDir) {
             success = Result::Success::No;
-            reason.append(std::string("Missing required cmd argument: ") + ConfigurationKeys::Key::outDir.data() +
-                          '\n');
+            reason.append(fmt::format("Missing required cmd argument: {}\n", ConfigurationKeys::Key::outDir));
         }
         return Result{success, reason};
     }
